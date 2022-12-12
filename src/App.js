@@ -1,8 +1,24 @@
 import "./App.css";
 import { GoogleLogin } from "@react-oauth/google";
 import jwt_decode from "jwt-decode";
+import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
 
 function App() {
+  const responseFacebook = (response) => {
+    alert(
+      JSON.stringify(
+        {
+          Email: response.email,
+          Firstname: response.first_name,
+          Lastname: response.last_name,
+          userID: response.userID,
+        },
+        null,
+        4
+      )
+    );
+  };
+
   return (
     <div className="App">
       <GoogleLogin
@@ -24,6 +40,15 @@ function App() {
         onError={() => {
           console.log("Login Failed");
         }}
+      />
+      <FacebookLogin
+        appId="461253366162675"
+        fields="name,email,picture,first_name,last_name"
+        autoLoad
+        callback={responseFacebook}
+        render={(renderProps) => (
+          <button onClick={renderProps.onClick}>FB button</button>
+        )}
       />
     </div>
   );
